@@ -1,0 +1,89 @@
+import java.util.*;
+class BinaryTreeNode{
+	public int data; 
+	public BinaryTreeNode left, right; 
+    static BinaryTreeNode root;
+	public BinaryTreeNode(int data){
+		this.data = data; 
+		left = null; 
+		right = null; 
+	}
+ 
+	void insert(BinaryTreeNode temp, int key)
+	{
+        if (temp == null) {
+            root = new BinaryTreeNode(key);
+            return;
+        }
+        Queue<BinaryTreeNode> q = new LinkedList<BinaryTreeNode>();
+        q.add(temp);
+ 
+        // Do level order traversal until we find an empty place.
+        while (!q.isEmpty()) {
+            temp = q.peek();
+            q.remove();
+ 
+            if (temp.left == null) {
+                temp.left = new BinaryTreeNode(key);
+                break;
+            }
+            else
+                q.add(temp.left);
+ 
+            if (temp.right == null) {
+                temp.right = new BinaryTreeNode(key);
+                break;
+            }
+            else
+                q.add(temp.right);
+        }
+    }
+}
+
+class LevelAveragesBinaryTree {
+
+	static BinaryTreeNode root;
+	static BinaryTreeNode temp = root;
+
+	  public static List<Double> findLevelAverages(BinaryTreeNode root) {
+	        //write your code here
+	        List<Double> list = new ArrayList<Double>();
+            if(root == null)
+                return list;
+            Queue<BinaryTreeNode> q = new LinkedList<BinaryTreeNode>();
+            q.add(root);    
+            while(!q.isEmpty()) {
+                int size = q.size();
+                double sum = 0;
+                for(int i = 0; i < size; i++) {
+                    BinaryTreeNode temp = q.remove();
+                    sum += temp.data;
+                    if(temp.left != null)
+                        q.add(temp.left);
+                    if(temp.right != null)
+                        q.add(temp.right);
+                }
+                list.add(sum/size);
+            }
+            return list;
+	        
+	  }
+
+
+	public static void main(String args[])
+	{
+		Scanner sc=new Scanner(System.in);
+		String str[]=sc.nextLine().split(" ");
+		BinaryTreeNode bt=new BinaryTreeNode(Integer.parseInt(str[0]));
+		root=bt;
+		for(int i=1; i<str.length; i++){
+			if(str[i]!=null)
+		    	bt.insert(root,Integer.parseInt(str[i]));
+		}
+		List<Double> list =findLevelAverages(root);
+        for(Double d : list)
+            System.out.println(d);
+	}
+}
+ 
+
